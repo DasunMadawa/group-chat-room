@@ -2,12 +2,15 @@ package lk.ijse.chat_room.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -26,7 +29,10 @@ import java.util.Optional;
 public class ClientChatFormController {
 
     @FXML
-    public GridPane emojiBarGrid;
+    private GridPane emojiBarGrid;
+
+    @FXML
+    private ScrollPane scrollPane;
 
     @FXML
     private AnchorPane emojiBarPane;
@@ -80,6 +86,15 @@ public class ClientChatFormController {
         return root;
     }
 
+    private void setScrollPaneAuto(){
+        vBox.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                scrollPane.setVvalue((Double) t1);
+            }
+        });
+    }
+
     @FXML
     public void mgTxtOnAction(ActionEvent actionEvent) {
         sendBtnOnAction(actionEvent);
@@ -108,7 +123,7 @@ public class ClientChatFormController {
         hBox.getChildren().add(label);
         vBox.getChildren().add(hBox);
 
-
+        setScrollPaneAuto();
         mgTxt.clear();
 
 
@@ -133,12 +148,13 @@ public class ClientChatFormController {
         hBox.getChildren().add(label);
 
         vBox.getChildren().add(hBox);
+        setScrollPaneAuto();
 
     }
 
     public void displayImage(String sender , byte[] bytesAr) {
         HBox hBox = new HBox();
-        setHBoxStyle(hBox , false);
+        setHBoxStylePhoto(hBox , false);
 
         Label label = new Label(sender+": ");
         label.setStyle(
@@ -157,6 +173,8 @@ public class ClientChatFormController {
         imageView.setFitHeight(200);
         hBox.getChildren().addAll(label, imageView);
         vBox.getChildren().add(hBox);
+
+        setScrollPaneAuto();
 
     }
 
@@ -188,6 +206,25 @@ public class ClientChatFormController {
 
     }
 
+    public void setHBoxStylePhoto(HBox hBox , boolean isRightSide){
+        if (isRightSide){
+            hBox.setStyle(
+                    "-fx-alignment: center-right;" +
+                            " -fx-fill-height: true;" +
+                            " -fx-min-height: 200;" +
+                            " -fx-min-width: 200;"
+            );
+        }else {
+            hBox.setStyle(
+                    "-fx-alignment: center-left;" +
+                            " -fx-fill-height: true;" +
+                            " -fx-min-height: 200;" +
+                            " -fx-min-width: 200;"
+            );
+        }
+
+    }
+
     @FXML
     public void photoSendImgViewOnMouseClicked(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
@@ -206,7 +243,7 @@ public class ClientChatFormController {
                 imageView.setFitWidth(200);
 
                 HBox hBox = new HBox();
-                setHBoxStyle(hBox , true);
+                setHBoxStylePhoto(hBox , true);
 
                 //Ask user need to send image to the Chat Room
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you need to send this " + selectedFile.getName() + " image to chat room ?", ButtonType.OK, ButtonType.NO);
@@ -220,6 +257,9 @@ public class ClientChatFormController {
                     client.sendImage(bytes);
                     hBox.getChildren().add(imageView);
                     vBox.getChildren().add(hBox);
+
+                    setScrollPaneAuto();
+
                 }
 
 

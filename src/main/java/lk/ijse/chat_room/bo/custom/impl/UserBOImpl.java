@@ -15,6 +15,9 @@ public class UserBOImpl implements UserBO {
     public boolean checkUser(UserDTO userDTO) {
         try {
             User user = userDAO.search(userDTO.getUserName());
+            if (user == null){
+                return false;
+            }
 
             if ( userDTO.getPassword().equals( user.getPassword() ) ){
                 return true;

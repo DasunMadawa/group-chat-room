@@ -15,14 +15,10 @@
    <children>
       <JFXTextField fx:id="mgTxt" layoutX="22.0" layoutY="603.0" onAction="#mgTxtOnAction" prefHeight="35.0" prefWidth="344.0" promptText="Type Here" />
       <JFXButton fx:id="sendBtn" layoutX="126.0" layoutY="651.0" onAction="#sendBtnOnAction" prefHeight="35.0" prefWidth="136.0" style="-fx-border-color: #000000;" text="Send" />
-      <ScrollPane layoutX="22.0" layoutY="17.0" prefHeight="538.0" prefWidth="344.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="536.0" prefWidth="342.0">
-               <children>
-                  <VBox fx:id="vBox" prefHeight="538.0" prefWidth="344.0" />
-               </children>
-            </AnchorPane>
-        </content>
+      <ScrollPane fx:id="scrollPane" layoutX="22.0" layoutY="17.0" prefHeight="538.0" prefWidth="344.0">
+         <content>
+            <VBox fx:id="vBox" prefHeight="538.0" prefWidth="344.0" />
+         </content>
       </ScrollPane>
       <ImageView fitHeight="35.0" fitWidth="37.0" layoutX="331.0" layoutY="603.0" onMouseClicked="#photoSendImgViewOnMouseClicked" pickOnBounds="true" preserveRatio="true">
          <image>
